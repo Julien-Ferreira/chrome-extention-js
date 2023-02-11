@@ -1,8 +1,10 @@
 let myLeads = [];
+let oldLeads = [];
 const inputEl = document.getElementById("input-el");
 const inputBtn = document.getElementById("input-btn");
 const ulEl = document.getElementById("ul-el");
-const deleteBtn = document.getElementById("delete-btn")
+const deleteBtn = document.getElementById("delete-btn");
+const tabBtn = document.getElementById("tab-btn")
 
 const leadsFromLocalStorage = JSON.parse(localStorage.getItem("myLeads"));
 
@@ -10,6 +12,16 @@ if (leadsFromLocalStorage) {
   myLeads = leadsFromLocalStorage;
   render(myLeads);
 }
+
+const tabs = {
+  url: "https://www.linkedin.com/in/per-harald-borgen/"
+}
+
+tabBtn.addEventListener("click", () => {
+  myLeads.push(tabs[0].url)
+  localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+  render(myLeads)
+})
 
 function render(leads) {
   let listItems = "";
@@ -26,14 +38,14 @@ function render(leads) {
 }
 
 deleteBtn.addEventListener("dblclick", () => {
-  localStorage.clear()
-  myLeads = []
-  render(myLeads)
-})
+  localStorage.clear();
+  myLeads = [];
+  render(myLeads);
+});
 
 inputBtn.addEventListener("click", function () {
   myLeads.push(inputEl.value);
   inputEl.value = "";
   localStorage.setItem("myLeads", JSON.stringify(myLeads));
-  renderLeads();
+  render(myLeads);
 });
