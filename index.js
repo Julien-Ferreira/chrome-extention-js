@@ -13,17 +13,16 @@ if (leadsFromLocalStorage) {
   render(myLeads);
 }
 
-const tabs = {
-  url: "https://www.linkedin.com/in/per-harald-borgen/"
-}
 
 tabBtn.addEventListener("click", () => {
-  myLeads.push(tabs[0].url)
-  localStorage.setItem("myLeads", JSON.stringify(myLeads) )
-  render(myLeads)
+  chrome.tabs.query({active: true, currentWindow: true}, (tabs) => {
+    myLeads.push(tabs[0].url)
+    localStorage.setItem("myLeads", JSON.stringify(myLeads) )
+    render(myLeads)
+  })
 })
 
-function render(leads) {
+const render = (leads) => {
   let listItems = "";
   for (let i = 0; i < leads.length; i++) {
     listItems += `
@@ -43,7 +42,7 @@ deleteBtn.addEventListener("dblclick", () => {
   render(myLeads);
 });
 
-inputBtn.addEventListener("click", function () {
+inputBtn.addEventListener("click", () => {
   myLeads.push(inputEl.value);
   inputEl.value = "";
   localStorage.setItem("myLeads", JSON.stringify(myLeads));
